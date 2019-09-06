@@ -8,21 +8,21 @@ password=$1
 echo $password | sudo -S usermod -aG i2c $USER
 
 # install pip and some apt dependencies
-echo $password | sudo -S apt-get update
-echo $password | sudo -S apt install -y python3-pip python3-pil python3-smbus python3-matplotlib cmake
-echo $password | sudo -S pip3 install -U pip
-echo $password | sudo -S pip3 install flask
-echo $password | sudo -S pip3 install -U --upgrade numpy
+echo $password | sudo -S proxychains apt-get update
+echo $password | sudo -S proxychains apt install -y python3-pip python3-pil python3-smbus python3-matplotlib cmake
+echo $password | sudo -S proxychains pip3 install -U pip
+echo $password | sudo -S proxychains pip3 install flask
+echo $password | sudo -S proxychains pip3 install -U --upgrade numpy
 
 # install tensorflow
-echo $password | sudo -S apt-get install -y libhdf5-serial-dev hdf5-tools libhdf5-dev zlib1g-dev zip libjpeg8-dev
-echo $password | sudo -S pip3 install -U numpy grpcio absl-py py-cpuinfo psutil portpicker six mock requests gast h5py astor termcolor protobuf keras-applications keras-preprocessing wrapt google-pasta
-echo $password | sudo -S pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v42 tensorflow-gpu
+echo $password | sudo -S proxychains apt-get install -y libhdf5-serial-dev hdf5-tools libhdf5-dev zlib1g-dev zip libjpeg8-dev
+echo $password | sudo -S proxychains pip3 install -U numpy grpcio absl-py py-cpuinfo psutil portpicker six mock requests gast h5py astor termcolor protobuf keras-applications keras-preprocessing wrapt google-pasta
+echo $password | sudo -S proxychains pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v42 tensorflow-gpu
 
 # install pytorch
-wget https://nvidia.box.com/shared/static/veo87trfaawj5pfwuqvhl6mzc5b55fbj.whl -O torch-1.1.0a0+b457266-cp36-cp36m-linux_aarch64.whl
-echo $password | sudo -S pip3 install -U numpy torch-1.1.0a0+b457266-cp36-cp36m-linux_aarch64.whl
-echo $password | sudo -S pip3 install -U torchvision
+proxychains wget https://nvidia.box.com/shared/static/veo87trfaawj5pfwuqvhl6mzc5b55fbj.whl -O torch-1.1.0a0+b457266-cp36-cp36m-linux_aarch64.whl
+echo $password | sudo -S proxychains pip3 install -U numpy torch-1.1.0a0+b457266-cp36-cp36m-linux_aarch64.whl
+echo $password | sudo -S proxychains pip3 install -U torchvision
 
 # setup Jetson.GPIO
 echo $password | sudo -S groupadd -f -r gpio
@@ -32,12 +32,12 @@ echo $password | sudo -S udevadm control --reload-rules
 echo $password | sudo -S udevadm trigger
 
 # install traitlets (master)
-echo $password | sudo -S python3 -m pip install git+https://github.com/ipython/traitlets@master
+echo $password | sudo -S proxychains python3 -m pip install git+https://github.com/ipython/traitlets@master
 
 # install jupyter lab
-echo $password | sudo -S apt install -y nodejs npm
-echo $password | sudo -S pip3 install -U jupyter jupyterlab
-echo $password | sudo -S jupyter labextension install @jupyter-widgets/jupyterlab-manager
+echo $password | sudo -S proxychains apt install -y nodejs npm
+echo $password | sudo -S proxychains pip3 install -U jupyter jupyterlab
+echo $password | sudo -S proxychains jupyter labextension install @jupyter-widgets/jupyterlab-manager
 jupyter lab --generate-config
 
 # set jupyter password
@@ -69,10 +69,10 @@ echo $password | sudo -S swapon /var/swapfile
 echo $password | sudo -S bash -c 'echo "/var/swapfile swap swap defaults 0 0" >> /etc/fstab'
 
 # install TensorFlow models repository
-git clone https://github.com/tensorflow/models
+proxychains git clone https://github.com/tensorflow/models
 cd models/research
 git checkout 5f4d34fc
-wget -O protobuf.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protoc-3.7.1-linux-aarch_64.zip
+proxychains wget -O protobuf.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protoc-3.7.1-linux-aarch_64.zip
 # wget -O protobuf.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protoc-3.7.1-linux-x86_64.zip
 unzip protobuf.zip
 ./bin/protoc object_detection/protos/*.proto --python_out=.
@@ -86,7 +86,7 @@ echo $password | sudo -S python3 setup.py install
 
 # install jupyter_clickable_image_widget
 echo $password | sudo -S npm install -g typescript
-git clone https://github.com/jaybdub/jupyter_clickable_image_widget
+proxychains git clone https://github.com/jaybdub/jupyter_clickable_image_widget
 cd jupyter_clickable_image_widget
 
 # allow next command to fail
@@ -100,4 +100,4 @@ echo $password | sudo -S jupyter labextension install .
 echo $password | sudo -S jupyter labextension install @jupyter-widgets/jupyterlab-manager
 
 # install remaining dependencies for projects
-sudo apt-get install python-setuptools
+sudo proxychains apt-get install python-setuptools
