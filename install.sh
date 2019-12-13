@@ -20,9 +20,13 @@ echo $password | sudo -S proxychains pip3 install -U numpy grpcio absl-py py-cpu
 echo $password | sudo -S proxychains pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v42 tensorflow-gpu
 
 # install pytorch
-proxychains wget https://nvidia.box.com/shared/static/veo87trfaawj5pfwuqvhl6mzc5b55fbj.whl -O torch-1.1.0a0+b457266-cp36-cp36m-linux_aarch64.whl
-echo $password | sudo -S proxychains pip3 install -U numpy torch-1.1.0a0+b457266-cp36-cp36m-linux_aarch64.whl
-echo $password | sudo -S proxychains pip3 install -U torchvision
+proxychains wget https://nvidia.box.com/shared/static/phqe92v26cbhqjohwtvxorrwnmrnfx1o.whl -O torch-1.3.0-cp36-cp36m-linux_aarch64.whl
+echo $password | sudo -S proxychains pip3 install -U numpy torch-1.3.0-cp36-cp36m-linux_aarch64.whl
+echo $password | sudo -S proxychains apt-get install libjpeg-dev zlib1g-dev
+echo $password | git clone --branch v0.4.2 https://github.com/pytorch/vision torchvision
+cd torchvision
+echo $password | sudo -S python3 setup.py install
+cd ../
 
 # setup Jetson.GPIO
 echo $password | sudo -S groupadd -f -r gpio
